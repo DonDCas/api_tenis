@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "rest_framework",   # App para creación de APIs facilmente
     "api",              # Indicando mi propia api
     "drf_spectacular",  # Swagger, usando OpenApi para generar documentación
+    'import_export',    # Para poder importar y exportar CSV
 ]
 
 MIDDLEWARE = [

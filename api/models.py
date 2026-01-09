@@ -25,7 +25,7 @@ class Jugador(models.Model): # Modelo jugador
     mano_dominante = models.CharField(max_length=1, choices=MANO_CHOICES)
 
     # Multimedia
-    foto = models.ImageField(upload_to="jugadores/", blank=True, null=True)
+    foto = models.ImageField(upload_to="jugadores/", blank=True, null=True, default="jugadores/default.png")
 
     # Info
 
