@@ -16,29 +16,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-STATIC_URL = '/static/'
-
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # si tienes archivos estáticos personalizados aquí
-]
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "True"
-
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
-
-
 # Application definition
 
 # Aqui se listan las aplicaciones en activo del proyecto
@@ -136,6 +113,22 @@ STATIC_URL = 'static/'
 
 # Ruta raiz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # si tienes archivos estáticos personalizados aquí
+]
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv("DEBUG") == "True"
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
+
 
 MEDIA_URL = os.getenv("MEDIA_URL")           # URL para acceder a archivos multimedia
 MEDIA_ROOT = BASE_DIR / "media" # Nombre de la carpeta donde estan los archivos
