@@ -16,8 +16,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 # Application definition
 
 # Aqui se listan las aplicaciones en activo del proyecto
@@ -181,4 +179,6 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-ALLOWED_HOSTS = ["*"]
+APPEND_SLASH = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
