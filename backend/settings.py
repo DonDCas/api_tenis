@@ -18,6 +18,24 @@ load_dotenv()
 
 # Application definition
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/6.0/howto/static-files/
+
+# URL base donde sedarán los archivos estaticos
+STATIC_URL = 'static/'
+
+# Ruta raiz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # si tienes archivos estáticos personalizados aquí
+]
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+
 # Aqui se listan las aplicaciones en activo del proyecto
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -125,26 +143,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-# URL base donde sedarán los archivos estaticos
-STATIC_URL = 'static/'
-
-# Ruta raiz del proyecto
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-STATIC_URL = '/static/'
-
-STATIC_ROOT = BASE_DIR / 'static'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # si tienes archivos estáticos personalizados aquí
-]
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
@@ -180,5 +178,9 @@ SPECTACULAR_SETTINGS = {
 }
 
 APPEND_SLASH = True
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+]
 CORS_ALLOW_CREDENTIALS = True
