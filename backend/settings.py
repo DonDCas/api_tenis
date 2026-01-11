@@ -27,11 +27,13 @@ STATIC_URL = 'static/'
 # Ruta raiz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_ROOT = BASE_DIR / 'static'
+# Archivos estáticos
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']   # Desarrollo
+STATIC_ROOT = BASE_DIR / 'staticfiles'     # Carpeta donde collectstatic colocará todo
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # si tienes archivos estáticos personalizados aquí
-]
+# AutoField por defecto
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
