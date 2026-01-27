@@ -2,7 +2,12 @@ import uuid # Para usar ids UUID
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
+
+
+class Usuario(AbstractUser):
+    email = models.EmailField(unique=True)
 
 class Jugador(models.Model): # Modelo jugador
     # Esto genera un selector de opciones
@@ -14,7 +19,7 @@ class Jugador(models.Model): # Modelo jugador
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Identidad
-    nombre_completo = models.CharField(max_length=150)
+    nombre_completo = models.CharField(max_length=150, unique=True)
     pais = models.CharField(max_length=50)
     bandera = models.CharField(max_length=5, blank=True, null=True) # Codigo ISO
     fecha_nacimiento = models.DateField(blank=True, null=True)
