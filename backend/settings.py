@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': BASE_DIR / os.getenv('DB_NAME'),
+        'NAME': os.getenv('DB_NAME'),
         'USER' : os.getenv('DB_USER'),
         'PASSWORD' : os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
@@ -155,6 +155,7 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 MEDIA_URL = os.getenv("MEDIA_URL")           # URL para acceder a archivos multimedia
 MEDIA_ROOT = BASE_DIR / "media" # Nombre de la carpeta donde estan los archivos

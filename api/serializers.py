@@ -1,6 +1,7 @@
 from rest_framework import serializers # Paquete validar y transformar en json una consuta
 from .models import Jugador, PartidoParticipante, Partido
 from django.contrib.auth.models import User
+from drf_spectacular.utils import extend_schema_field
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -10,7 +11,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         fields = ("username", "email", "password")
 
     def validate_username(self, value):
-        if User.objects.filter(username=value).exists:
+        if User.objects.filter(username=value).exists():
             raise serializers.ValidationError("Este usuario ya existe")
         return value
     
@@ -33,12 +34,23 @@ class JugadorSerializer(serializers.ModelSerializer):
         fields ="__all__" # <- Con esto indicamos que queremos todos los datos del modelo en la BBDD
 
 class ParticipantePartidoSerializer(serializers.ModelSerializer):
-    # Campo calculado que viene de una relación con el modelo Jugador
-    jugador_nombre = serializers.CharField(source="jugador.nombre_completo",read_only=True)
+    jugador_nombre = serializers.SerializerMethodField()
 
     class Meta:
         model = PartidoParticipante
-        fields = ("jugador", "jugador_nombre", "es_jugador1", "sets_1", "sets_2", "sets_3", "saque") # <- Con esto indicamos que queremos todos los datos del modelo en la BBDD
+        fields = (
+            "jugador",
+            "jugador_nombre",
+            "es_jugador1",
+            "sets_1",
+            "sets_2",
+            "sets_3",
+            "saque",
+        )
+
+    @extend_schema_field(serializers.CharField())
+    def get_jugador_nombre(self, obj):
+        return obj.jugador.nombre_completo if obj.jugador else None
 
 class PartidoSerializer(serializers.ModelSerializer):
     # Esta linea sirve para indicar una relación N:M entre Partidos y Jugadores
