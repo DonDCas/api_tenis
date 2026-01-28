@@ -9,8 +9,12 @@ from .serializers import JugadorSerializer, PartidoSerializer, ParticipanteParti
 from django.contrib.auth.models import User
 from .permissions import IsAuthenticatedOrReadOnlyGet # Para dar permisos de solo lectura
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 
-# Create your views here.
+
+
+User = get_user_model()
+# Cr0eate your views here.
 
 # En estas clases se generan automaticamente todos los ENDPOINT
 class JugadorViewSet(ModelViewSet):
@@ -178,3 +182,4 @@ class UserRegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
     permission_classes = [AllowAny]
+    

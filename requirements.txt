@@ -19,3 +19,4 @@ sqlparse==0.5.5
 tablib==3.9.0
 tzdata==2025.3
 uritemplate==4.2.0
+psycopg[binary]>=3.1
