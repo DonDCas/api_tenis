@@ -1,6 +1,6 @@
 from rest_framework import serializers # Paquete validar y transformar en json una consuta
 from .models import Jugador, PartidoParticipante, Partido
-from django.contrib.auth.models import User
+from api.models import Usuario as User
 from drf_spectacular.utils import extend_schema_field
 
 class UserRegisterSerializer(serializers.ModelSerializer):
