@@ -185,10 +185,11 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-APPEND_SLASH = True
+APPEND_SLASH = False
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
+    "http://localhost:4200",
 ]
 CORS_ALLOW_CREDENTIALS = True
