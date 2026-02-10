@@ -1,0 +1,1328 @@
+openapi: 3.0.3
+info:
+  title: Tennis API
+  version: 1.0.0
+  description: API para gestión de jugadores y partidos de tenis
+paths:
+  /api/register/:
+    post:
+      operationId: register_create
+      tags:
+      - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegister'
+          description: ''
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/jugadores/:
+    get:
+      operationId: v1_jugadores_list
+      parameters:
+      - in: query
+        name: mano_dominante
+        schema:
+          type: string
+          enum:
+          - D
+          - Z
+        description: |-
+          * `D` - Diestra
+          * `Z` - Zurda
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: pais
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJugadorList'
+          description: ''
+    post:
+      operationId: v1_jugadores_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Jugador'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Jugador'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Jugador'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jugador'
+          description: ''
+  /api/v1/jugadores/{id}/:
+    get:
+      operationId: v1_jugadores_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this jugador.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jugador'
+          description: ''
+    put:
+      operationId: v1_jugadores_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this jugador.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Jugador'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Jugador'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Jugador'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jugador'
+          description: ''
+    patch:
+      operationId: v1_jugadores_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this jugador.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedJugador'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedJugador'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedJugador'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jugador'
+          description: ''
+    delete:
+      operationId: v1_jugadores_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this jugador.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/participantes/:
+    get:
+      operationId: v1_participantes_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedParticipantePartidoList'
+          description: ''
+    post:
+      operationId: v1_participantes_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantePartido'
+          description: ''
+  /api/v1/participantes/{id}/:
+    get:
+      operationId: v1_participantes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this partido participante.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantePartido'
+          description: ''
+    put:
+      operationId: v1_participantes_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this partido participante.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantePartido'
+          description: ''
+    patch:
+      operationId: v1_participantes_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this partido participante.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedParticipantePartido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedParticipantePartido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedParticipantePartido'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantePartido'
+          description: ''
+    delete:
+      operationId: v1_participantes_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this partido participante.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/participantes/{id}/add-jugador/:
+    post:
+      operationId: v1_participantes_add_jugador_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this partido participante.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantePartido'
+          description: ''
+  /api/v1/participantes/{id}/remove-jugador/:
+    post:
+      operationId: v1_participantes_remove_jugador_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this partido participante.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ParticipantePartido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantePartido'
+          description: ''
+  /api/v1/partidos/:
+    get:
+      operationId: v1_partidos_list
+      parameters:
+      - in: query
+        name: competicion
+        schema:
+          type: string
+      - in: query
+        name: estado
+        schema:
+          type: string
+          enum:
+          - fin
+          - gam
+          - pen
+        description: |-
+          * `pen` - Pendiente
+          * `gam` - En Juego
+          * `fin` - Finalizado
+      - in: query
+        name: fase
+        schema:
+          type: string
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+        description: |-
+          * `1` - Final
+          * `2` - Semi-final
+          * `3` - Cuartos de final
+          * `4` - Octavos de final
+          * `5` - Dieciseisavos de final
+          * `6` - 2ª Ronda
+          * `7` - 1ª Ronda
+          * `8` - Fase Previa
+          * `0` - Amistoso
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPartidoList'
+          description: ''
+    post:
+      operationId: v1_partidos_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Partido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+          description: ''
+  /api/v1/partidos/{id}/:
+    get:
+      operationId: v1_partidos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this partido.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+          description: ''
+    put:
+      operationId: v1_partidos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this partido.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Partido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+          description: ''
+    patch:
+      operationId: v1_partidos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this partido.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPartido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPartido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPartido'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+          description: ''
+    delete:
+      operationId: v1_partidos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this partido.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/partidos/{id}/finalizar/:
+    post:
+      operationId: v1_partidos_finalizar_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this partido.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Partido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+          description: ''
+  /api/v1/partidos/{id}/iniciar/:
+    post:
+      operationId: v1_partidos_iniciar_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this partido.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Partido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Partido'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+          description: ''
+  /api/v1/token/:
+    post:
+      operationId: v1_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/v1/token/refresh/:
+    post:
+      operationId: v1_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+components:
+  schemas:
+    EstadoEnum:
+      enum:
+      - pen
+      - gam
+      - fin
+      type: string
+      description: |-
+        * `pen` - Pendiente
+        * `gam` - En Juego
+        * `fin` - Finalizado
+    FaseEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '0'
+      type: string
+      description: |-
+        * `1` - Final
+        * `2` - Semi-final
+        * `3` - Cuartos de final
+        * `4` - Octavos de final
+        * `5` - Dieciseisavos de final
+        * `6` - 2ª Ronda
+        * `7` - 1ª Ronda
+        * `8` - Fase Previa
+        * `0` - Amistoso
+    Jugador:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        nombre_completo:
+          type: string
+          maxLength: 150
+        pais:
+          type: string
+          maxLength: 50
+        bandera:
+          type: string
+          nullable: true
+          maxLength: 5
+        fecha_nacimiento:
+          type: string
+          format: date
+          nullable: true
+        ranking_atp:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        mejor_ranking:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        mano_dominante:
+          $ref: '#/components/schemas/ManoDominanteEnum'
+        foto:
+          type: string
+          format: uri
+          nullable: true
+        creacion:
+          type: string
+          format: date-time
+          readOnly: true
+        actualizacion:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - actualizacion
+      - creacion
+      - id
+      - mano_dominante
+      - nombre_completo
+      - pais
+    ManoDominanteEnum:
+      enum:
+      - D
+      - Z
+      type: string
+      description: |-
+        * `D` - Diestra
+        * `Z` - Zurda
+    PaginatedJugadorList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Jugador'
+    PaginatedParticipantePartidoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipantePartido'
+    PaginatedPartidoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Partido'
+    ParticipantePartido:
+      type: object
+      properties:
+        jugador:
+          type: string
+          format: uuid
+        jugador_nombre:
+          type: string
+          readOnly: true
+        es_jugador1:
+          type: boolean
+        sets_1:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        sets_2:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        sets_3:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        saque:
+          type: boolean
+      required:
+      - jugador
+      - jugador_nombre
+    Partido:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        participantes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipantePartido'
+          readOnly: true
+        estado:
+          allOf:
+          - $ref: '#/components/schemas/EstadoEnum'
+          readOnly: true
+        competicion:
+          type: string
+          maxLength: 200
+        fase:
+          $ref: '#/components/schemas/FaseEnum'
+        annio:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        fecha_iniciado:
+          type: string
+          format: date-time
+          nullable: true
+        fecha_finalizado:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        is_tie_break:
+          type: boolean
+        creado_en:
+          type: string
+          format: date-time
+          readOnly: true
+        arbitro:
+          type: integer
+          readOnly: true
+          nullable: true
+        ganador:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+      required:
+      - annio
+      - arbitro
+      - competicion
+      - creado_en
+      - estado
+      - fecha_finalizado
+      - ganador
+      - id
+      - participantes
+    PatchedJugador:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        nombre_completo:
+          type: string
+          maxLength: 150
+        pais:
+          type: string
+          maxLength: 50
+        bandera:
+          type: string
+          nullable: true
+          maxLength: 5
+        fecha_nacimiento:
+          type: string
+          format: date
+          nullable: true
+        ranking_atp:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        mejor_ranking:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        mano_dominante:
+          $ref: '#/components/schemas/ManoDominanteEnum'
+        foto:
+          type: string
+          format: uri
+          nullable: true
+        creacion:
+          type: string
+          format: date-time
+          readOnly: true
+        actualizacion:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedParticipantePartido:
+      type: object
+      properties:
+        jugador:
+          type: string
+          format: uuid
+        jugador_nombre:
+          type: string
+          readOnly: true
+        es_jugador1:
+          type: boolean
+        sets_1:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        sets_2:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        sets_3:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        saque:
+          type: boolean
+    PatchedPartido:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        participantes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipantePartido'
+          readOnly: true
+        estado:
+          allOf:
+          - $ref: '#/components/schemas/EstadoEnum'
+          readOnly: true
+        competicion:
+          type: string
+          maxLength: 200
+        fase:
+          $ref: '#/components/schemas/FaseEnum'
+        annio:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        fecha_iniciado:
+          type: string
+          format: date-time
+          nullable: true
+        fecha_finalizado:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        is_tie_break:
+          type: boolean
+        creado_en:
+          type: string
+          format: date-time
+          readOnly: true
+        arbitro:
+          type: integer
+          readOnly: true
+          nullable: true
+        ganador:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    UserRegister:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -3,7 +3,8 @@ from rest_framework.viewsets import ModelViewSet  # Esto sirve para proporcionar
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action # permite crear enpoints personalizados
 from rest_framework.response import Response # Permite enviar respuesta HTTP al cliente
-from rest_framework import status, generics # Permite usar los codigo para informar de lo que esta pasando al usuario
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, generics,filters # Permite usar los codigo para informar de lo que esta pasando al usuario
 from .models import Jugador, Partido, PartidoParticipante #Modelos ya creados
 from .serializers import JugadorSerializer, PartidoSerializer, ParticipantePartidoSerializer, UserRegisterSerializer # Paquete para serializar en JSON
 from django.contrib.auth.models import User
@@ -14,19 +15,36 @@ from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
-# Cr0eate your views here.
+# Create your views here.
 
 # En estas clases se generan automaticamente todos los ENDPOINT
 class JugadorViewSet(ModelViewSet):
     queryset = Jugador.objects.all()
     serializer_class = JugadorSerializer
-    #permission_classes = [AllowAny] # <- Borrar despues
     permission_classes = [IsAuthenticatedOrReadOnlyGet]
+
+    #Filtros
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    # Filtros exactos
+    filterset_fields = ['pais', 'mano_dominante']
+    # Búsqueda parcial
+    search_fields = ['nombre_completo']
+    # Ordenación
+    ordering_fields = ['ranking_atp', 'nombre_completo']
 
 class PartidoViewSet(ModelViewSet):
     queryset = Partido.objects.all()
     serializer_class = PartidoSerializer
     permission_classes = [IsAuthenticatedOrReadOnlyGet]
+
+    # Configuración de filtros
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    # Filtros exactos
+    filterset_fields = ['competicion', 'fase', 'estado']
+    # Búsqueda por nombre de competición
+    search_fields = ['competicion']
+    # Ordenación por fecha de creación o inicio
+    ordering_fields = ['creado_en', 'fecha_inicio']
 
     @action(detail=True, methods=["post"])
     def iniciar(self, request, pk=None):

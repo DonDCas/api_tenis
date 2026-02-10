@@ -1,0 +1,13 @@
+# Entorno virtual
+venv/
+env/
+ENV/
+.env
+
+# Archivos de compilación de Python
+__pycache__/
+*.py[cod]
+
+# IDEs
+.vscode/
+.idea/ 

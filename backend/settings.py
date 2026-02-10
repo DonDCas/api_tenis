@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
 
+    'django_filters',   # Filtros
     "rest_framework",   # App para creación de APIs facilmente
     "api",              # Indicando mi propia api
     "drf_spectacular",  # Swagger, usando OpenApi para generar documentación
@@ -163,6 +164,17 @@ MEDIA_ROOT = BASE_DIR / "media" # Nombre de la carpeta donde estan los archivos
 REST_FRAMEWORK = {
     # La sigiente linea indica la clase con la que se genera la documentación cuando se cambien los endpoints de la API
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    
+    #Paginación
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+
+    #Filtros
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
 
     # Indicación de clases de autentificación para la API 
     # Se aplica en POST, PUT, PATCH, DELETE
@@ -171,11 +183,11 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 
-    # Clase que indica quien puede modificar los datos
-    "DEFAULT_PERMISSION_CLASSES":(
+    # Permisos
+    "DEFAULT_PERMISSION_CLASSES": (
         # Actualmente pueden modificar todo el mundo
         #'rest_framework.permissions.AllowAny',
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        "api.permissions.IsAuthenticatedOrReadOnlyGet",
     )
 }
 
@@ -185,7 +197,7 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
