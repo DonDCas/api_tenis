@@ -9,7 +9,7 @@
 [TOC]
 
 
-# 0. Introucción
+# 0. Introducción
 
 Bienvenido a mi proyecto final para el modulo de Programación de Servicios y Procesos (PSP).
 Antes de empezar a explicar como trabajar con este backend quiero explicar que la elección de la tematica viene precedida de ejercicios anteriores de otros modulos que al no haber terminado de forma satisfactoria los he querido expandir un poco por gusto personal y de paso aprovechar para hacer un proyecto más grande.
