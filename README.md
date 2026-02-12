@@ -238,7 +238,7 @@ Para poder hacer hacer peticiones se necesita un token que se optiene mediante:
 
 Junto con el body
 
-```
+```JSON
 {
   "username": "Tu usuario",
   "password": "Tu contraseña"
