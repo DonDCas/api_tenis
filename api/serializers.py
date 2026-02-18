@@ -8,7 +8,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "email", "password")
+        fields = ("id","username", "email", "password", "is_superuser")
 
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
@@ -21,13 +21,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
+        es_super = validated_data.pop('is_superuser', False)
+                
         user = User.objects.create_user(
-            username = validated_data["username"],
+            username=validated_data["username"],
             email=validated_data.get("email"),
             password=validated_data["password"]
         )
+        
+        if es_super:
+            user.is_superuser = True
+            user.is_staff = True  
+            user.save()
+            
         return user
-
 class JugadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jugador

@@ -11,8 +11,10 @@ from django.contrib.auth.models import User
 from .permissions import IsAuthenticatedOrReadOnlyGet # Para dar permisos de solo lectura
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-
-
+from drf_spectacular.utils import extend_schema
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 # Create your views here.
@@ -196,8 +198,18 @@ class ParticipantePartidoViewSet(ModelViewSet):
             status = status.HTTP_200_OK
         )
     
+@extend_schema(exclude=True)
 class UserRegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
     permission_classes = [AllowAny]
-    
+    swagger_schema = None
+
+
+class UserMeView(APIView):
+    permission_classes = [IsAuthenticated] # Obligatorio estar logueado
+
+    def get(self, request):
+        # Usamos el serializer para convertir el objeto Usuario en JSON
+        serializer = UserRegisterSerializer(request.user)
+        return Response(serializer.data)
