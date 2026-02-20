@@ -46,7 +46,7 @@ class ParticipantePartidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartidoParticipante
         fields = (
-            "jugador",
+            "jugador_id",
             "jugador_nombre",
             "es_jugador1",
             "sets_1",
