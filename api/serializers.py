@@ -52,6 +52,7 @@ class ParticipantePartidoSerializer(serializers.ModelSerializer):
             "sets_1",
             "sets_2",
             "sets_3",
+            "puntos",
             "saque",
         )
 

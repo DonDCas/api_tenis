@@ -139,7 +139,19 @@ class PartidoParticipante(models.Model): # Modelo de jugadores de un patido
 
     saque = models.BooleanField(default=False)
 
+    puntos = models.PositiveSmallIntegerField(default=0) 
+
     def __str__(self):
-        return f"{self.jugador} ({'Jug1' if self.es_jugador1 else 'Jug2'})"
-    
-    
+        return f"{self.jugador} ({'Jug1' if self.es_jugador1 else 'Jug2'}) - Puntos: {self.puntos_display}"
+
+    @property
+    def puntos_display(self):
+        conversor = {
+            0: "0",
+            1: "15",
+            2: "30",
+            3: "40",
+            4: "Av",
+            5: "60",
+        }
+        return conversor.get(self.puntos, "ERROR")
