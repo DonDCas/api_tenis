@@ -1,13 +1,7 @@
-# Entorno virtual
 venv/
-env/
-ENV/
-.env
-
-# Archivos de compilación de Python
+*.pyc
 __pycache__/
-*.py[cod]
-
-# IDEs
-.vscode/
-.idea/ 
+db.sqlite3
+.env
+media/
+staticfiles/
