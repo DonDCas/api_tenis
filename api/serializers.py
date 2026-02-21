@@ -45,16 +45,7 @@ class ParticipantePartidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PartidoParticipante
-        fields = (
-            "jugador_id",
-            "jugador_nombre",
-            "es_jugador1",
-            "sets_1",
-            "sets_2",
-            "sets_3",
-            "puntos",
-            "saque",
-        )
+        fields = "__all__"
 
     @extend_schema_field(serializers.CharField())
     def get_jugador_nombre(self, obj):
@@ -67,9 +58,9 @@ class PartidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partido
         fields = "__all__" # <- Con esto indicamos que queremos todos los datos del modelo en la BBDD
-        read_only_fields = [ #Blindamos datos que no se deben modificar facimente
-            "estado", "arbitro", "fecha_inicio", "fecha_finalizado", "ganador"
-        ]
+#        read_only_fields = [ #Blindamos datos que no se deben modificar facimente
+#            "estado", "fecha_inicio", "fecha_finalizado", "ganador"
+#        ]
     
     def validate(self, data):
         instance = self.instance

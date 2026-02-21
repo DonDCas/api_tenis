@@ -107,7 +107,7 @@ class ParticipantePartidoViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="add-jugador")
     def add_jugador(self, request, pk=None):
-        partido = self.get_object()
+        partido = get_object_or_404(Partido, id=pk)
         jugador_id = request.data.get("jugador_id")
 
         if not request.user.is_superuser and request.user != partido.arbitro:
