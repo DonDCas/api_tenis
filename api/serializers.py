@@ -1,8 +1,8 @@
 from rest_framework import serializers # Paquete validar y transformar en json una consuta
 from .models import Jugador, PartidoParticipante, Partido
-from api.models import Usuario as User
+from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema_field
-
+User = get_user_model()
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -73,7 +73,8 @@ class PartidoSerializer(serializers.ModelSerializer):
                     "is_tie_break" : "No se puede modificar antes de empezar el partido"
                 })
             # Si ya existe un ganador, no se debe de poder modificar
-            if "ganador" in data and data["ganador"] != instance.ganador:
+            nuevo_ganador = data.get("ganador")
+            if nuevo_ganador and instance.ganador and nuevo_ganador != instance.ganador:
                 raise serializers.ValidationError(
                     {"ganador" : "No se puede modificar al ganador del partido manualmente"}
                 )    
